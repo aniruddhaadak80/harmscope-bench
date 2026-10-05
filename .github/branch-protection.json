@@ -1,8 +1,19 @@
 {
   "//": "Apply with: gh api repos/<owner>/<repo>/branches/main/protection -X PUT --input .github/branch-protection.json",
+  "//contexts": "These are the exact job names in ci.yml plus 'Secret scan' from gitleaks.yml. A context that no workflow reports can never be satisfied, so a typo here locks the branch forever.",
   "required_status_checks": {
     "strict": true,
-    "contexts": ["Format", "Lint", "Typecheck", "Policy gates", "Test", "Python test", "Build"]
+    "contexts": [
+      "Format",
+      "Lint",
+      "Typecheck",
+      "Policy gates",
+      "Test",
+      "Python test",
+      "Build",
+      "Secret scan",
+      "Doctor smoke test"
+    ]
   },
   "enforce_admins": false,
   "required_pull_request_reviews": {

@@ -16,8 +16,8 @@
   "type": "module",
   "packageManager": "npm@11.21.0",
   "engines": {
-    "node": ">=22.12.0",
-    "npm": ">=10"
+    "node": "\u003e=22.12.0",
+    "npm": "\u003e=10"
   },
   "allowScripts": {
     "better-sqlite3": true,
@@ -45,8 +45,9 @@
     "check:public-hygiene": "node scripts/check-public-hygiene.mjs",
     "check:readme-commands": "node scripts/check-readme-commands.mjs",
     "pytest": "python -m pytest services/engine -q",
-    "check": "npm run format:check && npm run lint && npm run typecheck && npm run check:skill-version && npm run check:no-secrets && npm run check:theme-tokens && npm run check:boundaries && npm run check:public-hygiene && npm run check:readme-commands && npm test && npm run pytest && npm run build",
-    "release": "node scripts/release.mjs"
+    "check": "npm run format:check \u0026\u0026 npm run lint \u0026\u0026 npm run typecheck \u0026\u0026 npm run check:action-pins \u0026\u0026 npm run check:skill-version \u0026\u0026 npm run check:no-secrets \u0026\u0026 npm run check:theme-tokens \u0026\u0026 npm run check:boundaries \u0026\u0026 npm run check:public-hygiene \u0026\u0026 npm run check:readme-commands \u0026\u0026 npm test \u0026\u0026 npm run pytest \u0026\u0026 npm run build",
+    "release": "node scripts/release.mjs",
+    "check:action-pins": "node scripts/check-action-pins.mjs"
   },
   "keywords": [
     "ai",
