@@ -27,7 +27,7 @@ may change a case, and it writes the snapshot:
 harmscope-bench export --case <id> --out apps/web/content/case.json
 ```
 
-The snapshot carries the obligations *and* the engine's own verdict on them — `queue`, `review`,
+The snapshot carries the obligations _and_ the engine's own verdict on them — `queue`, `review`,
 `liability`, `exposure` — plus the audit trail of every attempt, refusals included. The web app
 renders those numbers and recomputes nothing.
 

@@ -28,11 +28,17 @@ names the specific artefact that is missing and the party who owes it:
   "allowed": false,
   "code": "MISSING_EVIDENCE",
   "detail": "disclosure requires verified evidence for: notice_text, locale_matrix",
-  "blockingGates": [{ "code": "MISSING_EVIDENCE", "obligationId": "disclosure", "missingEvidence": ["notice_text", "locale_matrix"] }]
+  "blockingGates": [
+    {
+      "code": "MISSING_EVIDENCE",
+      "obligationId": "disclosure",
+      "missingEvidence": ["notice_text", "locale_matrix"]
+    }
+  ]
 }
 ```
 
-`caseRatifiable` is reported as *what is still outstanding*, not as *whether this is ethical*.
+`caseRatifiable` is reported as _what is still outstanding_, not as _whether this is ethical_.
 The severity-5 override is the deliberate exception: it requires a human to put their name
 against accepting residual risk, because that is a decision a person should be accountable for
 and no function should be able to discharge it.

@@ -255,13 +255,13 @@ surface is a transport, never a second implementation.
 `services/engine` is pure Python with **no dependencies**. It reads no clock, opens no socket,
 uses no randomness. Five operations:
 
-| Operation            | What it computes                                                    |
-| -------------------- | ------------------------------------------------------------------- |
-| `adjudicate`         | whether one transition is allowed, and every gate blocking it        |
-| `queue`              | obligations ranked by open weight, annotated with their gates        |
-| `review`             | phase, sign-off readiness, and every gate standing in the way        |
-| `liability_split`    | exposure apportioned between the parties that owe it                 |
-| `residual_exposure`  | a bounded, monotonic 0–100 score and its drivers                    |
+| Operation           | What it computes                                              |
+| ------------------- | ------------------------------------------------------------- |
+| `adjudicate`        | whether one transition is allowed, and every gate blocking it |
+| `queue`             | obligations ranked by open weight, annotated with their gates |
+| `review`            | phase, sign-off readiness, and every gate standing in the way |
+| `liability_split`   | exposure apportioned between the parties that owe it          |
+| `residual_exposure` | a bounded, monotonic 0–100 score and its drivers              |
 
 **Why this must be code.** Ask a model whether an appeal path is adequate and it writes you a
 paragraph. This returns `allowed: false` and names the two evidence kinds that would change the
@@ -284,15 +284,15 @@ withdrawn  → drafted
 Any move absent from that table is refused with the legal alternatives listed. Then, on top of
 the table, gates:
 
-| Gate                   | Refuses unless                                                    |
-| ---------------------- | ----------------------------------------------------------------- |
-| `MISSING_EVIDENCE`     | every required evidence kind is attached **and verified**          |
-| `NEEDS_CONTESTANT`     | someone is actually recorded as contesting it                      |
-| `NEEDS_ARBITRATION`    | a ruling reference is attached                                     |
-| `NEEDS_OVERRIDE`       | severity is 5 and a person is named as accepting residual risk     |
-| `NEEDS_DEFERRAL_DATE`  | a deferral carries the date it is deferred to                      |
-| `NEEDS_REJECTION_REF`  | a rejection carries a recorded reason                              |
-| `WRONG_PARTY`          | only the party that owes it may withdraw it                        |
+| Gate                  | Refuses unless                                                 |
+| --------------------- | -------------------------------------------------------------- |
+| `MISSING_EVIDENCE`    | every required evidence kind is attached **and verified**      |
+| `NEEDS_CONTESTANT`    | someone is actually recorded as contesting it                  |
+| `NEEDS_ARBITRATION`   | a ruling reference is attached                                 |
+| `NEEDS_OVERRIDE`      | severity is 5 and a person is named as accepting residual risk |
+| `NEEDS_DEFERRAL_DATE` | a deferral carries the date it is deferred to                  |
+| `NEEDS_REJECTION_REF` | a rejection carries a recorded reason                          |
+| `WRONG_PARTY`         | only the party that owes it may withdraw it                    |
 
 An unverified artefact satisfies nothing. That is the load-bearing detail: attaching a document
 is cheap, and claiming you read it is what the flag means.
@@ -411,24 +411,24 @@ Every read-only command takes `--json`. Exit codes: `0` ok — **including a ref
 node packages/cli/dist/bin.js skills
 ```
 
-| Skill               | Use it when                                                        |
-| ------------------- | ------------------------------------------------------------------ |
-| `open-a-case`       | a deployment needs a review and no case exists yet                   |
-| `attach-evidence`   | a row is blocked by `MISSING_EVIDENCE` and you have the artefact     |
-| `sign-off-gate`     | someone asks whether a deployment is ready to ship                   |
-| `expose-over-mcp`   | another agent should be able to ask whether a move is allowed        |
-| `diagnose`          | a command failed or `doctor` reports red                             |
-| `product-overview`  | you need the map rather than the detail                              |
+| Skill              | Use it when                                                      |
+| ------------------ | ---------------------------------------------------------------- |
+| `open-a-case`      | a deployment needs a review and no case exists yet               |
+| `attach-evidence`  | a row is blocked by `MISSING_EVIDENCE` and you have the artefact |
+| `sign-off-gate`    | someone asks whether a deployment is ready to ship               |
+| `expose-over-mcp`  | another agent should be able to ask whether a move is allowed    |
+| `diagnose`         | a command failed or `doctor` reports red                         |
+| `product-overview` | you need the map rather than the detail                          |
 
 Editing a skill body without bumping `metadata.version` fails CI.
 
 ## Configuration
 
-| Variable              | Default      | Meaning                                          |
-| --------------------- | ------------ | ------------------------------------------------ |
-| `PRODUCT_ROOT`        | `process.cwd()` | where the CLI finds `services/engine/src`      |
-| `PRODUCT_DATA_DIR`    | `:memory:`   | SQLite path; `:memory:` is discarded on exit     |
-| `PRODUCT_MCP_PERMISSIONS` | union of declared | comma-separated ceiling for the MCP server  |
+| Variable                  | Default           | Meaning                                      |
+| ------------------------- | ----------------- | -------------------------------------------- |
+| `PRODUCT_ROOT`            | `process.cwd()`   | where the CLI finds `services/engine/src`    |
+| `PRODUCT_DATA_DIR`        | `:memory:`        | SQLite path; `:memory:` is discarded on exit |
+| `PRODUCT_MCP_PERMISSIONS` | union of declared | comma-separated ceiling for the MCP server   |
 
 ## Development
 
@@ -469,14 +469,14 @@ the gate it fails — so the shape of the queue reads as the shape of the blocka
 
 ## Architecture decisions
 
-| ADR                                                                    | Decision                                              |
-| ---------------------------------------------------------------------- | ----------------------------------------------------- |
-| [0001](docs/adr/0001-narrow-waist.md)                                  | one registry, one `Tool` interface                    |
-| [0002](docs/adr/0002-python-engine-boundary.md)                        | the engine is a pure Python function over stdin/stdout |
-| [0003](docs/adr/0003-web-app-self-contained.md)                         | the web app has no workspace dependencies             |
-| [0004](docs/adr/0004-web-snapshot-boundary.md)                         | the web renders an exported snapshot, never a live call |
-| [0005](docs/adr/0005-obligation-ids-scoped-to-case.md)                 | obligation ids are unique within a case               |
-| [0006](docs/adr/0006-no-judgement-operation.md)                        | no operation returns an ethical judgement             |
+| ADR                                                    | Decision                                                |
+| ------------------------------------------------------ | ------------------------------------------------------- |
+| [0001](docs/adr/0001-narrow-waist.md)                  | one registry, one `Tool` interface                      |
+| [0002](docs/adr/0002-python-engine-boundary.md)        | the engine is a pure Python function over stdin/stdout  |
+| [0003](docs/adr/0003-web-app-self-contained.md)        | the web app has no workspace dependencies               |
+| [0004](docs/adr/0004-web-snapshot-boundary.md)         | the web renders an exported snapshot, never a live call |
+| [0005](docs/adr/0005-obligation-ids-scoped-to-case.md) | obligation ids are unique within a case                 |
+| [0006](docs/adr/0006-no-judgement-operation.md)        | no operation returns an ethical judgement               |
 
 ADR 0006 is the one worth reading before you use this. The engine has no
 `is_this_ethical(case) -> bool`, and adding one is not a feature request — it would launder a
