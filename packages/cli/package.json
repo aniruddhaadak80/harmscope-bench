@@ -31,6 +31,6 @@
     "@harmscopebench/memory": "0.1.0",
     "@harmscopebench/plugins": "0.1.0",
     "@harmscopebench/skills": "0.1.0",
-    "commander": "^14.0.0"
+    "commander": "^15.0.0"
   }
 }
