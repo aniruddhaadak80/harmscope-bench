@@ -95,18 +95,27 @@ for (const key of uniq) {
     console.log(`  [SHORT ] ${key} — ${sha.length} chars, expected ${SHA_LENGTH} (truncated pin)`)
     continue
   }
-  let alive = true
+  let verdict = 'ok'
   try {
     const response = await fetch(`https://api.github.com/repos/${repo}/commits/${sha}`, {
       headers: { Accept: 'application/vnd.github+json' },
     })
-    alive = response.ok
+    if (response.status === 404) verdict = 'broken'
+    else if (!response.ok) {
+      // 403 and 429 mean we are rate limited or unauthenticated, which says nothing about
+      // whether the pin is valid. Reporting "broken" here would fail CI for the wrong reason,
+      // and a gate that cries wolf gets deleted.
+      verdict = response.status === 403 || response.status === 429 ? 'unknown' : 'broken'
+    }
   } catch {
-    console.log(`  ${key} — network unavailable, cannot verify`)
+    verdict = 'unknown'
+  }
+  if (verdict === 'unknown') {
+    console.log(`  [SKIP  ] ${key} — GitHub API unavailable or rate limited, cannot verify`)
     continue
   }
-  results.set(key, alive)
-  console.log(`  [${alive ? 'OK   ' : 'BROKEN'}] ${key}`)
+  results.set(key, verdict === 'ok')
+  console.log(`  [${verdict === 'ok' ? 'OK   ' : 'BROKEN'}] ${key}`)
 }
 
 const broken = pins.filter((p) => results.get(`${p.repo}@${p.sha}`) === false)
