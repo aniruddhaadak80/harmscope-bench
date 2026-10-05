@@ -1,0 +1,199 @@
+{
+  "$comment": "Hand-computed expected outputs. Regenerating this file from the implementation defeats its purpose: these values were derived from the transition table and gate rules by hand, so a change in behaviour shows up as a diff instead of being silently blessed.",
+  "calls": [
+    {
+      "name": "legal",
+      "why": "severity 3 needs no override, evidence is verified, so the move is permitted",
+      "obligations": [
+        {
+          "id": "appeal",
+          "kind": "appeal_path",
+          "severity": 3,
+          "claimant": "operator",
+          "state": "evidenced",
+          "requiredEvidence": ["policy_doc"],
+          "evidence": [{ "kind": "policy_doc", "verified": true }],
+          "contestedBy": []
+        }
+      ],
+      "transition": { "obligationId": "appeal", "to": "ratified" },
+      "expected": {
+        "allowed": true,
+        "code": "OK",
+        "detail": "appeal may move evidenced -> ratified",
+        "obligationId": "appeal",
+        "fromState": "evidenced",
+        "toState": "ratified",
+        "blockingGates": [],
+        "nextObligationId": "appeal",
+        "nextObligationState": "ratified"
+      }
+    },
+    {
+      "name": "missing_evidence",
+      "why": "an unverified artefact satisfies nothing, so both required kinds are reported",
+      "obligations": [
+        {
+          "id": "appeal",
+          "kind": "appeal_path",
+          "severity": 3,
+          "claimant": "operator",
+          "state": "drafted",
+          "requiredEvidence": ["policy_doc", "appeal_channel"],
+          "evidence": [{ "kind": "policy_doc", "verified": false }],
+          "contestedBy": []
+        }
+      ],
+      "transition": { "obligationId": "appeal", "to": "evidenced" },
+      "expected": {
+        "allowed": false,
+        "code": "MISSING_EVIDENCE",
+        "detail": "appeal requires verified evidence for: policy_doc, appeal_channel",
+        "obligationId": "appeal",
+        "fromState": "drafted",
+        "toState": "evidenced",
+        "blockingGates": [
+          {
+            "code": "MISSING_EVIDENCE",
+            "obligationId": "appeal",
+            "detail": "appeal requires verified evidence for: policy_doc, appeal_channel",
+            "severity": 3,
+            "missingEvidence": ["policy_doc", "appeal_channel"]
+          }
+        ],
+        "nextObligationId": "appeal",
+        "nextObligationState": "evidenced"
+      }
+    },
+    {
+      "name": "illegal_transition",
+      "why": "drafted -> ratified is absent from the table, so the refusal enumerates what is legal",
+      "obligations": [
+        {
+          "id": "a",
+          "kind": "consent",
+          "severity": 2,
+          "claimant": "operator",
+          "state": "drafted",
+          "requiredEvidence": [],
+          "evidence": [],
+          "contestedBy": []
+        }
+      ],
+      "transition": { "obligationId": "a", "to": "ratified" },
+      "expected": {
+        "allowed": false,
+        "code": "ILLEGAL_TRANSITION",
+        "detail": "a cannot move drafted -> ratified; from drafted the only legal moves are: evidenced, rejected, withdrawn",
+        "obligationId": "a",
+        "fromState": "drafted",
+        "toState": "ratified",
+        "blockingGates": [],
+        "nextObligationId": "a",
+        "nextObligationState": "evidenced"
+      }
+    },
+    {
+      "name": "critical_needs_override",
+      "why": "severity 5 ratifies only with a named person accepting the residual risk",
+      "obligations": [
+        {
+          "id": "crit",
+          "kind": "incident_channel",
+          "severity": 5,
+          "claimant": "vendor",
+          "state": "evidenced",
+          "requiredEvidence": [],
+          "evidence": [],
+          "contestedBy": []
+        }
+      ],
+      "transition": { "obligationId": "crit", "to": "ratified" },
+      "expected": {
+        "allowed": false,
+        "code": "NEEDS_OVERRIDE",
+        "detail": "crit is severity 5; ratifying it requires an overrideRef naming the person accepting the residual risk",
+        "obligationId": "crit",
+        "fromState": "evidenced",
+        "toState": "ratified",
+        "blockingGates": [
+          {
+            "code": "NEEDS_OVERRIDE",
+            "obligationId": "crit",
+            "detail": "crit is severity 5; ratifying it requires an overrideRef naming the person accepting the residual risk",
+            "severity": 5,
+            "missingEvidence": []
+          }
+        ],
+        "nextObligationId": "crit",
+        "nextObligationState": "ratified"
+      }
+    },
+    {
+      "name": "unknown_obligation",
+      "why": "a transition naming an absent obligation is refused, never invented",
+      "obligations": [
+        {
+          "id": "a",
+          "kind": "consent",
+          "severity": 2,
+          "claimant": "operator",
+          "state": "drafted",
+          "requiredEvidence": [],
+          "evidence": [],
+          "contestedBy": []
+        }
+      ],
+      "transition": { "obligationId": "ghost", "to": "evidenced" },
+      "expected": {
+        "allowed": false,
+        "code": "UNKNOWN_OBLIGATION",
+        "detail": "no obligation 'ghost' in this case",
+        "obligationId": "ghost",
+        "fromState": "",
+        "toState": "evidenced",
+        "blockingGates": [],
+        "nextObligationId": "a",
+        "nextObligationState": "evidenced"
+      }
+    },
+    {
+      "name": "queue_head_is_worst_open_weight",
+      "why": "the reported next item is ranked by open weight, not by list order",
+      "obligations": [
+        {
+          "id": "low",
+          "kind": "data_retention",
+          "severity": 1,
+          "claimant": "operator",
+          "state": "drafted",
+          "requiredEvidence": [],
+          "evidence": [],
+          "contestedBy": []
+        },
+        {
+          "id": "high",
+          "kind": "appeal_path",
+          "severity": 5,
+          "claimant": "vendor",
+          "state": "evidenced",
+          "requiredEvidence": [],
+          "evidence": [],
+          "contestedBy": []
+        }
+      ],
+      "transition": { "obligationId": "low", "to": "withdrawn", "by": "operator" },
+      "expected": {
+        "allowed": true,
+        "code": "OK",
+        "detail": "low may move drafted -> withdrawn",
+        "obligationId": "low",
+        "fromState": "drafted",
+        "toState": "withdrawn",
+        "blockingGates": [],
+        "nextObligationId": "high",
+        "nextObligationState": "ratified"
+      }
+    }
+  ]
+}

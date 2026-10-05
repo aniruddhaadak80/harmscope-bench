@@ -1,0 +1,425 @@
+{
+  "case": {
+    "id": "rank-decisions",
+    "title": "Automated ranking in hiring review",
+    "systemName": "ranker v2",
+    "status": "open",
+    "createdAt": 1791179647195,
+    "updatedAt": 1791180281037
+  },
+  "obligations": [
+    {
+      "id": "appeal-path",
+      "kind": "appeal_path",
+      "severity": 4,
+      "claimant": "operator",
+      "state": "evidenced",
+      "requiredEvidence": ["policy_doc", "appeal_channel"],
+      "evidence": [
+        {
+          "kind": "policy_doc",
+          "ref": "docs/appeal-policy.md",
+          "verified": true
+        },
+        {
+          "kind": "appeal_channel",
+          "ref": "support.ranker.example/appeal",
+          "verified": true
+        }
+      ],
+      "contestedBy": []
+    },
+    {
+      "id": "disclosure",
+      "kind": "disclosure_notice",
+      "severity": 3,
+      "claimant": "operator",
+      "state": "drafted",
+      "requiredEvidence": ["notice_text"],
+      "evidence": [],
+      "contestedBy": []
+    },
+    {
+      "id": "contest-log",
+      "kind": "contest_audit",
+      "severity": 2,
+      "claimant": "worker_council",
+      "state": "challenged",
+      "requiredEvidence": ["audit_log"],
+      "evidence": [
+        {
+          "kind": "audit_log",
+          "ref": "exports/contest-audit.log",
+          "verified": true
+        }
+      ],
+      "contestedBy": ["regulator", "worker_council"]
+    },
+    {
+      "id": "bias-audit",
+      "kind": "disparity_bound",
+      "severity": 4,
+      "claimant": "regulator",
+      "state": "drafted",
+      "requiredEvidence": ["disparity_report", "sample_size"],
+      "evidence": [
+        {
+          "kind": "disparity_report",
+          "ref": "reports/disparity-2026q1.pdf",
+          "verified": true
+        }
+      ],
+      "contestedBy": []
+    },
+    {
+      "id": "human-oversight",
+      "kind": "human_oversight",
+      "severity": 3,
+      "claimant": "operator",
+      "state": "drafted",
+      "requiredEvidence": ["override_procedure"],
+      "evidence": [],
+      "contestedBy": []
+    },
+    {
+      "id": "incident",
+      "kind": "incident_channel",
+      "severity": 5,
+      "claimant": "operator",
+      "state": "evidenced",
+      "requiredEvidence": ["oncall_roster"],
+      "evidence": [
+        {
+          "kind": "oncall_roster",
+          "ref": "ops/oncall.md",
+          "verified": true
+        }
+      ],
+      "contestedBy": []
+    },
+    {
+      "id": "retention",
+      "kind": "data_retention",
+      "severity": 2,
+      "claimant": "vendor",
+      "state": "drafted",
+      "requiredEvidence": [],
+      "evidence": [],
+      "contestedBy": []
+    }
+  ],
+  "queue": {
+    "head": "bias-audit",
+    "count": 7,
+    "byState": {
+      "arbitrated": 0,
+      "challenged": 1,
+      "deferred": 0,
+      "drafted": 4,
+      "evidenced": 2,
+      "ratified": 0,
+      "rejected": 0,
+      "withdrawn": 0
+    },
+    "items": [
+      {
+        "id": "bias-audit",
+        "kind": "disparity_bound",
+        "claimant": "regulator",
+        "state": "drafted",
+        "severity": 4,
+        "openWeight": 20,
+        "nextState": "evidenced",
+        "blockedBy": ["MISSING_EVIDENCE"],
+        "settled": false
+      },
+      {
+        "id": "incident",
+        "kind": "incident_channel",
+        "claimant": "operator",
+        "state": "evidenced",
+        "severity": 5,
+        "openWeight": 20,
+        "nextState": "ratified",
+        "blockedBy": ["NEEDS_OVERRIDE"],
+        "settled": false
+      },
+      {
+        "id": "appeal-path",
+        "kind": "appeal_path",
+        "claimant": "operator",
+        "state": "evidenced",
+        "severity": 4,
+        "openWeight": 16,
+        "nextState": "ratified",
+        "blockedBy": [],
+        "settled": false
+      },
+      {
+        "id": "disclosure",
+        "kind": "disclosure_notice",
+        "claimant": "operator",
+        "state": "drafted",
+        "severity": 3,
+        "openWeight": 15,
+        "nextState": "evidenced",
+        "blockedBy": ["MISSING_EVIDENCE"],
+        "settled": false
+      },
+      {
+        "id": "human-oversight",
+        "kind": "human_oversight",
+        "claimant": "operator",
+        "state": "drafted",
+        "severity": 3,
+        "openWeight": 15,
+        "nextState": "evidenced",
+        "blockedBy": ["MISSING_EVIDENCE"],
+        "settled": false
+      },
+      {
+        "id": "retention",
+        "kind": "data_retention",
+        "claimant": "vendor",
+        "state": "drafted",
+        "severity": 2,
+        "openWeight": 10,
+        "nextState": "evidenced",
+        "blockedBy": [],
+        "settled": false
+      },
+      {
+        "id": "contest-log",
+        "kind": "contest_audit",
+        "claimant": "worker_council",
+        "state": "challenged",
+        "severity": 2,
+        "openWeight": 8,
+        "nextState": "arbitrated",
+        "blockedBy": ["NEEDS_ARBITRATION"],
+        "settled": false
+      }
+    ]
+  },
+  "review": {
+    "phase": "contested",
+    "total": 7,
+    "settled": 0,
+    "byState": {
+      "arbitrated": 0,
+      "challenged": 1,
+      "deferred": 0,
+      "drafted": 4,
+      "evidenced": 2,
+      "ratified": 0,
+      "rejected": 0,
+      "withdrawn": 0
+    },
+    "caseRatifiable": false,
+    "caseBlocking": [
+      {
+        "code": "NOTHING_TO_RATIFY",
+        "obligationId": "bias-audit",
+        "detail": "bias-audit is drafted; it must reach evidenced before the case can be signed off",
+        "severity": 4,
+        "missingEvidence": []
+      },
+      {
+        "code": "NOTHING_TO_RATIFY",
+        "obligationId": "incident",
+        "detail": "incident is evidenced; it must reach ratified before the case can be signed off",
+        "severity": 5,
+        "missingEvidence": []
+      },
+      {
+        "code": "NOTHING_TO_RATIFY",
+        "obligationId": "appeal-path",
+        "detail": "appeal-path is evidenced; it must reach ratified before the case can be signed off",
+        "severity": 4,
+        "missingEvidence": []
+      },
+      {
+        "code": "NOTHING_TO_RATIFY",
+        "obligationId": "disclosure",
+        "detail": "disclosure is drafted; it must reach evidenced before the case can be signed off",
+        "severity": 3,
+        "missingEvidence": []
+      },
+      {
+        "code": "NOTHING_TO_RATIFY",
+        "obligationId": "human-oversight",
+        "detail": "human-oversight is drafted; it must reach evidenced before the case can be signed off",
+        "severity": 3,
+        "missingEvidence": []
+      },
+      {
+        "code": "NOTHING_TO_RATIFY",
+        "obligationId": "retention",
+        "detail": "retention is drafted; it must reach evidenced before the case can be signed off",
+        "severity": 2,
+        "missingEvidence": []
+      },
+      {
+        "code": "NOTHING_TO_RATIFY",
+        "obligationId": "contest-log",
+        "detail": "contest-log is challenged; it must reach arbitrated before the case can be signed off",
+        "severity": 2,
+        "missingEvidence": []
+      }
+    ],
+    "residualExposure": 83,
+    "nextAction": "clear NOTHING_TO_RATIFY on bias-audit"
+  },
+  "liability": {
+    "totalWeight": 104,
+    "apportionmentUnit": 1000000,
+    "shares": [
+      {
+        "party": "operator",
+        "micro": 634615,
+        "share": 0.634615,
+        "weight": 66
+      },
+      {
+        "party": "regulator",
+        "micro": 192308,
+        "share": 0.192308,
+        "weight": 20
+      },
+      {
+        "party": "vendor",
+        "micro": 96154,
+        "share": 0.096154,
+        "weight": 10
+      },
+      {
+        "party": "worker_council",
+        "micro": 76923,
+        "share": 0.076923,
+        "weight": 8
+      }
+    ],
+    "concentration": 0.634615
+  },
+  "exposure": {
+    "score": 83,
+    "openWeight": 104,
+    "maxSeverity": 5,
+    "openCount": 7,
+    "drivers": [
+      {
+        "id": "bias-audit",
+        "kind": "disparity_bound",
+        "state": "drafted",
+        "severity": 4,
+        "weight": 20,
+        "claimant": "regulator"
+      },
+      {
+        "id": "incident",
+        "kind": "incident_channel",
+        "state": "evidenced",
+        "severity": 5,
+        "weight": 20,
+        "claimant": "operator"
+      },
+      {
+        "id": "appeal-path",
+        "kind": "appeal_path",
+        "state": "evidenced",
+        "severity": 4,
+        "weight": 16,
+        "claimant": "operator"
+      },
+      {
+        "id": "disclosure",
+        "kind": "disclosure_notice",
+        "state": "drafted",
+        "severity": 3,
+        "weight": 15,
+        "claimant": "operator"
+      },
+      {
+        "id": "human-oversight",
+        "kind": "human_oversight",
+        "state": "drafted",
+        "severity": 3,
+        "weight": 15,
+        "claimant": "operator"
+      },
+      {
+        "id": "retention",
+        "kind": "data_retention",
+        "state": "drafted",
+        "severity": 2,
+        "weight": 10,
+        "claimant": "vendor"
+      },
+      {
+        "id": "contest-log",
+        "kind": "contest_audit",
+        "state": "challenged",
+        "severity": 2,
+        "weight": 8,
+        "claimant": "worker_council"
+      }
+    ]
+  },
+  "attempts": [
+    {
+      "obligationId": "contest-log",
+      "fromState": "evidenced",
+      "toState": "challenged",
+      "allowed": true,
+      "code": "OK",
+      "actor": "reviewer",
+      "at": 1791180280268
+    },
+    {
+      "obligationId": "contest-log",
+      "fromState": "drafted",
+      "toState": "evidenced",
+      "allowed": true,
+      "code": "OK",
+      "actor": "reviewer",
+      "at": 1791180279611
+    },
+    {
+      "obligationId": "incident",
+      "fromState": "evidenced",
+      "toState": "ratified",
+      "allowed": false,
+      "code": "NEEDS_OVERRIDE",
+      "actor": "reviewer",
+      "at": 1791180277538
+    },
+    {
+      "obligationId": "incident",
+      "fromState": "drafted",
+      "toState": "evidenced",
+      "allowed": true,
+      "code": "OK",
+      "actor": "reviewer",
+      "at": 1791180276956
+    },
+    {
+      "obligationId": "appeal-path",
+      "fromState": "drafted",
+      "toState": "evidenced",
+      "allowed": true,
+      "code": "OK",
+      "actor": "reviewer",
+      "at": 1791180275955
+    }
+  ],
+  "states": [
+    "drafted",
+    "evidenced",
+    "challenged",
+    "arbitrated",
+    "ratified",
+    "rejected",
+    "deferred",
+    "withdrawn"
+  ]
+}

@@ -1,0 +1,39 @@
+node_modules/
+dist/
+build/
+.next/
+out/
+coverage/
+.turbo/
+*.tsbuildinfo
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+
+.env
+.env.local
+.env.*.local
+!.env.example
+
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.tmp/
+
+# Local review databases. The review itself is portable: `harmscope-bench export` writes the
+# committed snapshot the web app renders, so no working database belongs in the repository.
+.data/
+*.db
+*.db-wal
+*.db-shm
+
+# `apps/web/content/case.json` is deliberately NOT ignored: it is the review artefact, and its
+# diff is the diff of the review.
