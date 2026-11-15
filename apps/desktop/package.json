@@ -11,11 +11,10 @@
     "dev": "npm run build && electron .",
     "dist": "electron-builder"
   },
-  "dependencies": {},
   "devDependencies": {
     "electron": "^42.11.18",
     "electron-builder": "^26.18.0",
     "typescript": "~5.9.3",
-    "vitest": "^3.2.4"
+    "vitest": "^4.1.12"
   }
 }
